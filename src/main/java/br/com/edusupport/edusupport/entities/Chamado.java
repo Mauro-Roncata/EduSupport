@@ -1,5 +1,8 @@
 package br.com.edusupport.edusupport.entities;
 
+import br.com.edusupport.edusupport.enums.Categoria;
+import br.com.edusupport.edusupport.enums.Prioridade;
+import br.com.edusupport.edusupport.enums.StatusChamado;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -38,6 +41,7 @@ public class Chamado {
     @Enumerated(EnumType.STRING)
     private Prioridade prioridade;
     @NotNull
+    @Enumerated(EnumType.STRING)
     private Categoria categoria;
 
     public Chamado(String titulo, String descricao, Prioridade prioridade, Categoria categoria) {
