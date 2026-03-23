@@ -4,8 +4,10 @@ import br.com.edusupport.edusupport.entities.Chamado;
 import br.com.edusupport.edusupport.enums.StatusChamado;
 import br.com.edusupport.edusupport.repositories.ChamadoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,7 +45,9 @@ public class ChamadoService {
             chamado.setStatus(StatusChamado.RESOLVIDO);
             chamado.setDataFechamento(LocalDateTime.now());
             return chamadoRepository.save(chamado);
-        } else throw new RuntimeException("Chamado em aberto");
+        } else
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O chamado não pode ser fechado pois não está Em Andamento.");
     }
-
 }
+
+
