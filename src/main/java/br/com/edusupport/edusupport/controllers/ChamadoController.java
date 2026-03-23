@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/chamados")
 @RequiredArgsConstructor
@@ -30,6 +31,22 @@ public class ChamadoController {
         List<Chamado> chamadoList = chamadoService.listAll();
         return ResponseEntity.ok().body(chamadoList);
     }
+
+    @PutMapping("/{id}/atender")
+    public ResponseEntity<Chamado> atenderChamado(@PathVariable Long id) {
+
+        Chamado chamadoAtualizado = chamadoService.atenderChamado(id);
+        return ResponseEntity.ok().body(chamadoAtualizado);
+    }
+
+    @PutMapping("/{id}/resolver")
+    public ResponseEntity<Chamado> resolverChamado(@PathVariable Long id){
+
+        Chamado chamadoResolvido = chamadoService.resolverChamado(id);
+        return ResponseEntity.ok().body(chamadoResolvido);
+
+    }
+
 
 
 }

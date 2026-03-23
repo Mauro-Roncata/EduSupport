@@ -39,10 +39,11 @@ public class ChamadoService {
     public Chamado resolverChamado(Long id) {
         Chamado chamado = chamadoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Chamado não encontrado"));
-
-        chamado.setStatus(StatusChamado.RESOLVIDO);
-        chamado.setDataFechamento(LocalDateTime.now());
-        return chamadoRepository.save(chamado);
+        if (chamado.getStatus() == StatusChamado.EM_ANDAMENTO) {
+            chamado.setStatus(StatusChamado.RESOLVIDO);
+            chamado.setDataFechamento(LocalDateTime.now());
+            return chamadoRepository.save(chamado);
+        } else throw new RuntimeException("Chamado em aberto");
     }
 
 }
