@@ -30,4 +30,6 @@ public class ChamadoController {
         List<Chamado> chamadoList = chamadoService.listAll();
         return ResponseEntity.ok().body(chamadoList);
     }
+
+
 }
