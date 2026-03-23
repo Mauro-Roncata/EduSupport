@@ -5,11 +5,11 @@ import br.com.edusupport.edusupport.entities.Chamado;
 import br.com.edusupport.edusupport.services.ChamadoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/chamados")
@@ -22,6 +22,12 @@ public class ChamadoController {
     public ResponseEntity<Chamado> criarChamado(@Valid @RequestBody Chamado chamado){
 
         Chamado chamado1 = chamadoService.abrirChamado(chamado);
-        return ResponseEntity.ok().body(chamado1);
+        return ResponseEntity.status(HttpStatus.CREATED).body(chamado1);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Chamado>> listarChamado(){
+        List<Chamado> chamadoList = chamadoService.listAll();
+        return ResponseEntity.ok().body(chamadoList);
     }
 }
