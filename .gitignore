@@ -36,4 +36,4 @@ build/
 *.class
 
 # Credenciais
-application-dev.properties
+**/application-dev.properties
