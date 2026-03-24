@@ -17,11 +17,13 @@ import java.util.List;
 public class ChamadoService {
 
     private final ChamadoRepository chamadoRepository;
+    private final EmailService emailService;
 
     public Chamado abrirChamado(Chamado chamado) {
         chamado.setStatus(StatusChamado.ABERTO);
-
-        return chamadoRepository.save(chamado);
+        Chamado chamadoSalvo = chamadoRepository.save(chamado);
+        emailService.enviarNotificacaoNovoChamado(chamadoSalvo);
+        return chamadoSalvo;
     }
 
     public List<Chamado> listAll() {
