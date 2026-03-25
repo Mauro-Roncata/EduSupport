@@ -1,5 +1,7 @@
 package br.com.edusupport.edusupport.services;
 
+import br.com.edusupport.edusupport.dtos.ChamadoRequestDTO;
+import br.com.edusupport.edusupport.dtos.ChamadoResponseDTO;
 import br.com.edusupport.edusupport.entities.Chamado;
 import br.com.edusupport.edusupport.enums.StatusChamado;
 import br.com.edusupport.edusupport.repositories.ChamadoRepository;
@@ -19,11 +21,23 @@ public class ChamadoService {
     private final ChamadoRepository chamadoRepository;
     private final EmailService emailService;
 
-    public Chamado abrirChamado(Chamado chamado) {
+    public ChamadoResponseDTO abrirChamado(ChamadoRequestDTO dto) {
+
+        Chamado chamado = new Chamado();
+
+        chamado.setTitulo(dto.titulo());
+        chamado.setDescricao(dto.descricao());
+        chamado.setCategoria(dto.categoria());
+        chamado.setPrioridade(dto.prioridade());
         chamado.setStatus(StatusChamado.ABERTO);
+
         Chamado chamadoSalvo = chamadoRepository.save(chamado);
+
         emailService.enviarNotificacaoNovoChamado(chamadoSalvo);
-        return chamadoSalvo;
+
+        return new ChamadoResponseDTO(chamadoSalvo.getId(),chamadoSalvo.getTitulo(),chamadoSalvo.getDescricao(),
+                chamadoSalvo.getStatus(),chamadoSalvo.getCategoria(),
+                chamadoSalvo.getPrioridade(),chamadoSalvo.getDataAbertura());
     }
 
     public List<Chamado> listAll() {
