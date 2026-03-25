@@ -1,6 +1,8 @@
 package br.com.edusupport.edusupport.controllers;
 
 
+import br.com.edusupport.edusupport.dtos.ChamadoRequestDTO;
+import br.com.edusupport.edusupport.dtos.ChamadoResponseDTO;
 import br.com.edusupport.edusupport.entities.Chamado;
 import br.com.edusupport.edusupport.services.ChamadoService;
 import jakarta.validation.Valid;
@@ -20,29 +22,29 @@ public class ChamadoController {
     private final ChamadoService chamadoService;
 
     @PostMapping
-    public ResponseEntity<Chamado> criarChamado(@Valid @RequestBody Chamado chamado){
+    public ResponseEntity<ChamadoResponseDTO> criarChamado(@Valid @RequestBody ChamadoRequestDTO dto){
 
-        Chamado chamado1 = chamadoService.abrirChamado(chamado);
-        return ResponseEntity.status(HttpStatus.CREATED).body(chamado1);
+        ChamadoResponseDTO chamadoCriado = chamadoService.abrirChamado(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(chamadoCriado);
     }
 
     @GetMapping
-    public ResponseEntity<List<Chamado>> listarChamado(){
-        List<Chamado> chamadoList = chamadoService.listAll();
-        return ResponseEntity.ok().body(chamadoList);
+    public ResponseEntity<List<ChamadoResponseDTO>> listarChamado(){
+        List<ChamadoResponseDTO> chamadoList = chamadoService.listAll();
+        return ResponseEntity.ok(chamadoList);
     }
 
     @PutMapping("/{id}/atender")
-    public ResponseEntity<Chamado> atenderChamado(@PathVariable Long id) {
+    public ResponseEntity<ChamadoResponseDTO> atenderChamado(@PathVariable Long id) {
 
-        Chamado chamadoAtualizado = chamadoService.atenderChamado(id);
-        return ResponseEntity.ok().body(chamadoAtualizado);
+        ChamadoResponseDTO chamadoAtualizado = chamadoService.atenderChamado(id);
+        return ResponseEntity.ok(chamadoAtualizado);
     }
 
     @PutMapping("/{id}/resolver")
-    public ResponseEntity<Chamado> resolverChamado(@PathVariable Long id){
+    public ResponseEntity<ChamadoResponseDTO> resolverChamado(@PathVariable Long id){
 
-        Chamado chamadoResolvido = chamadoService.resolverChamado(id);
+        ChamadoResponseDTO chamadoResolvido = chamadoService.resolverChamado(id);
         return ResponseEntity.ok().body(chamadoResolvido);
 
     }
