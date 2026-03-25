@@ -40,9 +40,20 @@ public class ChamadoService {
                 chamadoSalvo.getPrioridade(),chamadoSalvo.getDataAbertura());
     }
 
-    public List<Chamado> listAll() {
-        return chamadoRepository.findAll();
-    }
+    public List<ChamadoResponseDTO> listAll() {
+        return chamadoRepository.findAll()
+                .stream()
+                .map(chamado -> new ChamadoResponseDTO(
+                        chamado.getId(),
+                        chamado.getTitulo(),
+                        chamado.getDescricao(),
+                        chamado.getStatus(),
+                        chamado.getCategoria(),
+                        chamado.getPrioridade(),
+                        chamado.getDataAbertura()
+                )).toList();
+        };
+
 
     // Método para assumir chamado
     public Chamado atenderChamado(Long id) {
