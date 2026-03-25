@@ -56,12 +56,21 @@ public class ChamadoService {
 
 
     // Método para assumir chamado
-    public Chamado atenderChamado(Long id) {
+    public ChamadoResponseDTO atenderChamado(Long id) {
         Chamado chamado = chamadoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Chamado não encontrado"));
 
         chamado.setStatus(StatusChamado.EM_ANDAMENTO);
-        return chamadoRepository.save(chamado);
+        Chamado chamadoSalvo = chamadoRepository.save(chamado);
+        return new ChamadoResponseDTO(
+                chamadoSalvo.getId(),
+                chamadoSalvo.getTitulo(),
+                chamadoSalvo.getDescricao(),
+                chamadoSalvo.getStatus(),
+                chamadoSalvo.getCategoria(),
+                chamadoSalvo.getPrioridade(),
+                chamadoSalvo.getDataAbertura()
+        );
     }
 
     // Método para finalizar o serviço

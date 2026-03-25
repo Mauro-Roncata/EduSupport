@@ -35,10 +35,10 @@ public class ChamadoController {
     }
 
     @PutMapping("/{id}/atender")
-    public ResponseEntity<Chamado> atenderChamado(@PathVariable Long id) {
+    public ResponseEntity<ChamadoResponseDTO> atenderChamado(@PathVariable Long id) {
 
-        Chamado chamadoAtualizado = chamadoService.atenderChamado(id);
-        return ResponseEntity.ok().body(chamadoAtualizado);
+        ChamadoResponseDTO chamadoAtualizado = chamadoService.atenderChamado(id);
+        return ResponseEntity.ok(chamadoAtualizado);
     }
 
     @PutMapping("/{id}/resolver")
