@@ -13,6 +13,7 @@ public record ChamadoResponseDTO(
         StatusChamado status,
         Categoria categoria,
         Prioridade prioridade,
-        LocalDateTime dataAbertura
+        LocalDateTime dataAbertura,
+        LocalDateTime dataFechamento
 ) {
 }

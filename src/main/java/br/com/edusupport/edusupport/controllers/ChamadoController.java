@@ -42,9 +42,9 @@ public class ChamadoController {
     }
 
     @PutMapping("/{id}/resolver")
-    public ResponseEntity<Chamado> resolverChamado(@PathVariable Long id){
+    public ResponseEntity<ChamadoResponseDTO> resolverChamado(@PathVariable Long id){
 
-        Chamado chamadoResolvido = chamadoService.resolverChamado(id);
+        ChamadoResponseDTO chamadoResolvido = chamadoService.resolverChamado(id);
         return ResponseEntity.ok().body(chamadoResolvido);
 
     }

@@ -37,7 +37,8 @@ public class ChamadoService {
 
         return new ChamadoResponseDTO(chamadoSalvo.getId(),chamadoSalvo.getTitulo(),chamadoSalvo.getDescricao(),
                 chamadoSalvo.getStatus(),chamadoSalvo.getCategoria(),
-                chamadoSalvo.getPrioridade(),chamadoSalvo.getDataAbertura());
+                chamadoSalvo.getPrioridade(),chamadoSalvo.getDataAbertura(),
+                chamadoSalvo.getDataFechamento());
     }
 
     public List<ChamadoResponseDTO> listAll() {
@@ -50,7 +51,8 @@ public class ChamadoService {
                         chamado.getStatus(),
                         chamado.getCategoria(),
                         chamado.getPrioridade(),
-                        chamado.getDataAbertura()
+                        chamado.getDataAbertura(),
+                        chamado.getDataFechamento()
                 )).toList();
         };
 
@@ -69,18 +71,29 @@ public class ChamadoService {
                 chamadoSalvo.getStatus(),
                 chamadoSalvo.getCategoria(),
                 chamadoSalvo.getPrioridade(),
-                chamadoSalvo.getDataAbertura()
+                chamadoSalvo.getDataAbertura(),
+                chamadoSalvo.getDataFechamento()
         );
     }
 
     // Método para finalizar o serviço
-    public Chamado resolverChamado(Long id) {
+    public ChamadoResponseDTO resolverChamado(Long id) {
         Chamado chamado = chamadoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Chamado não encontrado"));
         if (chamado.getStatus() == StatusChamado.EM_ANDAMENTO) {
             chamado.setStatus(StatusChamado.RESOLVIDO);
             chamado.setDataFechamento(LocalDateTime.now());
-            return chamadoRepository.save(chamado);
+            Chamado chamadoSalvo = chamadoRepository.save(chamado);
+            return new ChamadoResponseDTO(
+                    chamadoSalvo.getId(),
+                    chamadoSalvo.getTitulo(),
+                    chamadoSalvo.getDescricao(),
+                    chamadoSalvo.getStatus(),
+                    chamadoSalvo.getCategoria(),
+                    chamadoSalvo.getPrioridade(),
+                    chamadoSalvo.getDataAbertura(),
+                    chamadoSalvo.getDataFechamento()
+            );
         } else
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O chamado não pode ser fechado pois não está Em Andamento.");
     }
