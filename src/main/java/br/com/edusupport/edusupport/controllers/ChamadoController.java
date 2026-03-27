@@ -7,6 +7,10 @@ import br.com.edusupport.edusupport.entities.Chamado;
 import br.com.edusupport.edusupport.services.ChamadoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +33,8 @@ public class ChamadoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ChamadoResponseDTO>> listarChamado(){
-        List<ChamadoResponseDTO> chamadoList = chamadoService.listAll();
+    public ResponseEntity<Page<ChamadoResponseDTO>> listarChamado(@ParameterObject @PageableDefault(size = 10, sort = {"dataAbertura"})Pageable pageable){
+        Page<ChamadoResponseDTO> chamadoList = chamadoService.listAll(pageable);
         return ResponseEntity.ok(chamadoList);
     }
 
