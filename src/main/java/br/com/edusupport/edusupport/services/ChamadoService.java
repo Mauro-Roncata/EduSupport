@@ -6,6 +6,9 @@ import br.com.edusupport.edusupport.entities.Chamado;
 import br.com.edusupport.edusupport.enums.StatusChamado;
 import br.com.edusupport.edusupport.repositories.ChamadoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -41,9 +44,8 @@ public class ChamadoService {
                 chamadoSalvo.getDataFechamento());
     }
 
-    public List<ChamadoResponseDTO> listAll() {
-        return chamadoRepository.findAll()
-                .stream()
+    public Page<ChamadoResponseDTO> listAll(Pageable pageable) {
+        return chamadoRepository.findAll(pageable)
                 .map(chamado -> new ChamadoResponseDTO(
                         chamado.getId(),
                         chamado.getTitulo(),
@@ -53,7 +55,7 @@ public class ChamadoService {
                         chamado.getPrioridade(),
                         chamado.getDataAbertura(),
                         chamado.getDataFechamento()
-                )).toList();
+                ));
         };
 
 
