@@ -16,7 +16,7 @@ public class CorsConfig {
                 registry.addMapping("/api/**") // Aplica a regra para todas as nossas URLs
 
                         // Localhost:3000 e 5173 são as portas padrão do React/Vite
-                        .allowedOrigins("http://localhost:3000", "http://localhost:5173")
+                        .allowedOrigins("http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:5500/")
 
                         // Métodos que o front pode usar
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")

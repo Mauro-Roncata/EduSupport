@@ -64,6 +64,10 @@ public class ChamadoService {
         Chamado chamado = chamadoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Chamado não encontrado"));
 
+        if (chamado.getStatus() != StatusChamado.ABERTO) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Apenas chamados abertos podem ser assumidos");
+        }
+
         chamado.setStatus(StatusChamado.EM_ANDAMENTO);
         Chamado chamadoSalvo = chamadoRepository.save(chamado);
         return new ChamadoResponseDTO(
