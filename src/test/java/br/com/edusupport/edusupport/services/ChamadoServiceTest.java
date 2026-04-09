@@ -30,7 +30,7 @@ public class ChamadoServiceTest {
     private ChamadoService chamadoService;
 
     @Test
-    @DisplayName("Lança erro ao tentar resolver chamdo que não está em andamento")
+    @DisplayName("Lança erro ao tentar resolver chamado que não está em andamento")
     void naoResolveChamadoForaDeAndamento (){
         Long idChamado = 1L;
         Chamado chamadoFalso = new Chamado();
@@ -85,4 +85,33 @@ public class ChamadoServiceTest {
         // Confere se o robô do banco foi acionado EXATAMENTE 1 vez para salvar
         verify(chamadoRepository, times(1)).save(any(Chamado.class));
     }
-}
+
+    @Test
+    @DisplayName("Deve assumir um chamado que está em aberto")
+    void assumirEmAberto() {
+
+        Long id = 1L;
+        Chamado chamadoAberto = new Chamado();
+        chamadoAberto.setId(id);
+        chamadoAberto.setStatus(StatusChamado.ABERTO);
+
+        chamadoAberto.setTitulo("Teste");
+        chamadoAberto.setDescricao("Testes");
+        chamadoAberto.setCategoria(Categoria.OUTROS);
+        chamadoAberto.setPrioridade(Prioridade.BAIXA);
+
+        when(chamadoRepository.findById(id)).thenReturn(Optional.of(chamadoAberto));
+        when(chamadoRepository.save(any(Chamado.class))).thenAnswer(i -> i.getArgument(0)); // Efeito Espelho
+
+        // 2. ACT
+        var chamadoAssumido = chamadoService.atenderChamado(id);
+
+        // 3. ASSERT
+        assertNotNull(chamadoAssumido);
+        assertEquals(StatusChamado.EM_ANDAMENTO, chamadoAssumido.status()); // Garante que o status mudou
+        verify(chamadoRepository, times(1)).save(any(Chamado.class)); // Garante que mandou salvar
+    }
+
+
+    }
+
