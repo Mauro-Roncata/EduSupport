@@ -2,8 +2,7 @@ package br.com.edusupport.edusupport.enums;
 
 public enum Prioridade {
 
-    BAIXA,
-    MEDIA,
-    ALTA,
-    CRITICA
+    V1_ALTA,
+    V2_MEDIA,
+    V3_BAIXA
 }
