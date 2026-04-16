@@ -44,6 +44,8 @@ public class Chamado {
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
 
+    private String escola;
+
     public Chamado(String titulo, String descricao, Prioridade prioridade, Categoria categoria) {
         this.titulo = titulo;
         this.descricao = descricao;
