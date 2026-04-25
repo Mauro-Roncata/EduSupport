@@ -3,6 +3,7 @@ package br.com.edusupport.edusupport.dtos;
 import br.com.edusupport.edusupport.enums.Categoria;
 import br.com.edusupport.edusupport.enums.Prioridade;
 import br.com.edusupport.edusupport.enums.StatusChamado;
+import jakarta.validation.constraints.Email;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +15,7 @@ public record ChamadoResponseDTO(
         Categoria categoria,
         Prioridade prioridade,
         LocalDateTime dataAbertura,
-        LocalDateTime dataFechamento
+        LocalDateTime dataFechamento,
+        String escola
 ) {
 }

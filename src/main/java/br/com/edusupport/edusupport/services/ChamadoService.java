@@ -24,11 +24,14 @@ public class ChamadoService {
     private final ChamadoRepository chamadoRepository;
     private final EmailService emailService;
 
-    public ChamadoResponseDTO abrirChamado(ChamadoRequestDTO dto) {
+    public ChamadoResponseDTO abrirChamado(ChamadoRequestDTO dto, String emailLogado) {
 
         Chamado chamado = new Chamado();
 
+        String escolaIdentificada = mapearEscola(emailLogado);
+
         chamado.setTitulo(dto.titulo());
+        chamado.setEscola(escolaIdentificada);
         chamado.setDescricao(dto.descricao());
         chamado.setCategoria(dto.categoria());
         chamado.setPrioridade(dto.prioridade());
@@ -41,7 +44,21 @@ public class ChamadoService {
         return new ChamadoResponseDTO(chamadoSalvo.getId(),chamadoSalvo.getTitulo(),chamadoSalvo.getDescricao(),
                 chamadoSalvo.getStatus(),chamadoSalvo.getCategoria(),
                 chamadoSalvo.getPrioridade(),chamadoSalvo.getDataAbertura(),
-                chamadoSalvo.getDataFechamento());
+                chamadoSalvo.getDataFechamento(), chamadoSalvo.getEscola());
+    }
+
+    // Função auxiliar
+    private String mapearEscola (String email){
+        if (email == null){
+            return "Origem desconhecida";
+        }
+
+        String emailLower = email.toLowerCase();
+
+        if (emailLower.contains("anita")) return "E.M.F Anita Garibaldi";
+
+
+        return "Escola não identificada (" + email + ")";
     }
 
     public Page<ChamadoResponseDTO> listAll(Pageable pageable) {
@@ -54,7 +71,8 @@ public class ChamadoService {
                         chamado.getCategoria(),
                         chamado.getPrioridade(),
                         chamado.getDataAbertura(),
-                        chamado.getDataFechamento()
+                        chamado.getDataFechamento(),
+                        chamado.getEscola()
                 ));
         };
 
@@ -78,7 +96,8 @@ public class ChamadoService {
                 chamadoSalvo.getCategoria(),
                 chamadoSalvo.getPrioridade(),
                 chamadoSalvo.getDataAbertura(),
-                chamadoSalvo.getDataFechamento()
+                chamadoSalvo.getDataFechamento(),
+                chamadoSalvo.getEscola()
         );
     }
 
@@ -98,7 +117,8 @@ public class ChamadoService {
                     chamadoSalvo.getCategoria(),
                     chamadoSalvo.getPrioridade(),
                     chamadoSalvo.getDataAbertura(),
-                    chamadoSalvo.getDataFechamento()
+                    chamadoSalvo.getDataFechamento(),
+                    chamadoSalvo.getEscola()
             );
         } else
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O chamado não pode ser fechado pois não está Em Andamento.");

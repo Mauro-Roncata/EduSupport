@@ -13,8 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -26,11 +29,14 @@ public class ChamadoController {
     private final ChamadoService chamadoService;
 
     @PostMapping
-    public ResponseEntity<ChamadoResponseDTO> criarChamado(@Valid @RequestBody ChamadoRequestDTO dto){
+    public ResponseEntity<ChamadoResponseDTO> criarChamado(@Valid @RequestBody ChamadoRequestDTO dto, @AuthenticationPrincipal OAuth2User principal){
 
-        ChamadoResponseDTO chamadoCriado = chamadoService.abrirChamado(dto);
+        String emailLogado = principal.getAttribute("email");
+
+        ChamadoResponseDTO chamadoCriado = chamadoService.abrirChamado(dto, emailLogado);
         return ResponseEntity.status(HttpStatus.CREATED).body(chamadoCriado);
     }
+
 
     @GetMapping
     public ResponseEntity<Page<ChamadoResponseDTO>> listarChamado(@ParameterObject @PageableDefault(size = 10, sort = {"dataAbertura"})Pageable pageable){
